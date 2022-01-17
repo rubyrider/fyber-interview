@@ -1,3 +1,10 @@
+# Solution
+
+The flow diagram:
+
+![The Diagram](doc/architectural-diagram.png)
+
+# Exercise
 # TCP Server
 
 The task is to write a TCP server that receives messages from an event source, and forwards them to connected user clients.
