@@ -1,0 +1,20 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    benchmark-ips (2.9.2)
+    power_assert (2.0.1)
+    test-unit (3.5.3)
+      power_assert
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  benchmark-ips
+  test-unit
+
+RUBY VERSION
+   ruby 3.1.0p0
+
+BUNDLED WITH
+   2.1.4
