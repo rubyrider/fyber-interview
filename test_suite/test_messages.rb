@@ -17,14 +17,25 @@ class ServerTest < Test::Unit::TestCase
     Servers::EventSource.start!
   end
   
-  def test_server_ping
+  def test_event_server_ping
     Thread.new { start_server }
     
-    output = TCPSocket.open("localhost", 9800) do |socket|
+    output = TCPSocket.open('localhost', 9800) do |socket|
       socket.puts "Ping!"
       socket.gets.chomp
     end
 
     assert_equal output, 'Pong!'
+  end
+  
+  def test_user_server_ping
+    Thread.new { start_server }
+    
+    output = TCPSocket.open('localhost', 9801) do |socket|
+      socket.puts "Ping!"
+      socket.gets.chomp
+    end
+
+    assert_equal output, 'PongForUser'
   end
 end
