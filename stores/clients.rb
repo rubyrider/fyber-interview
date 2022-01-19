@@ -8,7 +8,7 @@ module Stores
       @client = client
     end
     
-    def breadcast(message)
+    def broadcast(message)
       client.puts(message)
     end
     

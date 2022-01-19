@@ -53,3 +53,5 @@ class ServerTest < Test::Unit::TestCase
     assert_equal Stores::Clients.count, 1
   end
 end
+
+require_relative 'event_message_test'
