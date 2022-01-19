@@ -38,4 +38,15 @@ class ServerTest < Test::Unit::TestCase
 
     assert_equal output, 'PongForUser'
   end
+  
+  def test_user_connection
+    Thread.new { Servers::EventSource.new.start_user_server! }
+  
+    output = TCPSocket.open('localhost', 9801) do |socket|
+      socket.puts "123\n"
+      socket.gets.chomp
+    end
+  
+    assert_equal output, '123'
+  end
 end

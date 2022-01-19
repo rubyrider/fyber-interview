@@ -31,12 +31,18 @@ module Servers
               when 'quit'
                 client.puts 'Quitting!'
                 client.close
+              else
+                handle_user_clients(message, client)
               end
             end
           end
         end
       end
       end
+    end
+    
+    def handle_user_clients(message, client)
+      client.puts message
     end
     
     def start_event_source_server!
