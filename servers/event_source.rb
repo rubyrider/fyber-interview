@@ -1,27 +1,63 @@
 # frozen_string_literal: true
-
 require 'socket'
 
 module Servers
   class EventSource
-    attr_reader :server
+    attr_reader :port, :user_port
     
     def self.start!
       new.start!
     end
     
     def initialize
-      @server = TCPServer.open('localhost', 9800)
+      @port = 9800
+      @user_port = 9801
     end
     
     def start!
-      loop do
-        event_source_connection = server.accept
-        
-        Thread.start(event_source_connection) do |connection|
-          connection.puts("Pong")
-          connection.puts("Closing the connection with #{event_source_connection}")
-          connection.close
+      start_event_source_server!
+      start_user_server!
+    end
+
+    def start_user_server!
+      Thread.new do
+      TCPServer.open('localhost', user_port) do |server|
+        loop do
+          Thread.start(server.accept) do |client|
+            while (message = client.gets&.chomp)
+              case message
+              when 'Ping!'
+                client.puts "PongForUser"
+              when 'quit'
+                client.puts 'Quitting!'
+                client.close
+              end
+            end
+          end
+        end
+      end
+      end
+    end
+    
+    def start_event_source_server!
+      Thread.new do
+      TCPServer.open('localhost', port) do |server|
+        loop do
+          Thread.start(server.accept) do |client|
+            while (message = client.gets&.chomp)
+              puts "Received: #{message}"
+              case message
+              when 'Ping!'
+                client.puts 'Pong!'
+              when 'quit'
+                client.puts 'Quitting!'
+                client.close
+              else
+                client.puts message
+              end
+            end
+            end
+          end
         end
       end
     end

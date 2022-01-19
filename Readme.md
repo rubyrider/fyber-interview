@@ -1,8 +1,39 @@
 # Solution
 
-The flow diagram:
+##The flow diagram:
 
 ![The Diagram](doc/architectural-diagram.png)
+
+## Interactive Mode
+
+To play with the solution, feel free to run the command:
+
+```bash
+bin/console
+```
+
+```ruby
+# To instantiate a  server
+# Run in the console:
+
+Servers::EventSource.start!
+
+# and telnet with localhost and 9800
+
+# TBH
+```
+
+or you can directly start the server
+
+```bash
+bin/server
+```
+
+And then telnet
+
+```bash
+telnet localhost 9800
+```
 
 # Exercise
 # TCP Server

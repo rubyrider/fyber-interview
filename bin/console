@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'byebug'
+
+require 'irb'
+require_relative '../tcp-server'
+
+IRB.start
