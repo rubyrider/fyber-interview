@@ -17,23 +17,27 @@ module Servers
       start_event_source_server!
     end
     
+    def handle_message(message, client)
+      puts "Received: #{message}"
+      case message
+      when 'Ping!'
+        client.puts 'Pong!'
+      when 'quit'
+        client.puts 'Quitting!'
+        client.close
+      else
+        client.puts message
+      end
+    end
+    
     def start_event_source_server!
       Thread.new do
-      TCPServer.open('localhost', port) do |server|
-        loop do
-          Thread.start(server.accept) do |client|
-            while (message = client.gets&.chomp)
-              puts "Received: #{message}"
-              case message
-              when 'Ping!'
-                client.puts 'Pong!'
-              when 'quit'
-                client.puts 'Quitting!'
-                client.close
-              else
-                client.puts message
+        TCPServer.open('localhost', port) do |server|
+          loop do
+            Thread.start(server.accept) do |client|
+              while (message = client.gets&.chomp)
+                handle_message(message, client)
               end
-            end
             end
           end
         end

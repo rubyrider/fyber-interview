@@ -22,33 +22,41 @@ class ServerTest < Test::Unit::TestCase
   def test_event_server_ping
     Thread.new { start_server }
     
-    output = TCPSocket.open('localhost', 9800) do |socket|
-      socket.puts "Ping!"
-      socket.gets.chomp
+    begin
+      output = TCPSocket.open('localhost', 9800) do |socket|
+        socket.puts "Ping!"
+        socket.gets.chomp
+      end
+    rescue
+      retry
     end
-
+    
     assert_equal output, 'Pong!'
   end
   
   def test_user_server_ping
     Thread.new { start_server }
     
-    output = TCPSocket.open('localhost', 9801) do |socket|
-      socket.puts "Ping!"
-      socket.gets.chomp
+    begin
+      output = TCPSocket.open('localhost', 9801) do |socket|
+        socket.puts "Ping!"
+        socket.gets.chomp
+      end
+    rescue
+      retry
     end
-
+    
     assert_equal output, 'PongForUser'
   end
   
   def test_user_connection
     Thread.new { Servers::UserServer.start! }
-  
+    
     output = TCPSocket.open('localhost', 9801) do |socket|
       socket.puts "123\n"
       socket.gets&.chomp
     end
-  
+    
     assert_equal output, 'Connection accepted for the user##123'
     assert_equal Stores::Clients.count, 1
   end

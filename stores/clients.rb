@@ -18,11 +18,11 @@ module Stores
     
     class << self
       def stores
-        Thread.current[:clients] || {}
+        @@stores ||= Thread.current[:clients] ||= {}
       end
       
       def count
-        Thread.current[:clients].size
+        stores.size || 0
       end
   
       def list
