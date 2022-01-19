@@ -4,7 +4,8 @@ require "test/unit"
 require 'byebug'
 require 'socket'
 
-require_relative './../servers/event_source'
+require_relative './../stores/clients'
+require_relative './../servers'
 
 class ServerTest < Test::Unit::TestCase
   def test_server_port
@@ -15,6 +16,7 @@ class ServerTest < Test::Unit::TestCase
   
   def start_server
     Servers::EventSource.start!
+    Servers::UserServer.start!
   end
   
   def test_event_server_ping
@@ -40,13 +42,14 @@ class ServerTest < Test::Unit::TestCase
   end
   
   def test_user_connection
-    Thread.new { Servers::EventSource.new.start_user_server! }
+    Thread.new { Servers::UserServer.start! }
   
     output = TCPSocket.open('localhost', 9801) do |socket|
       socket.puts "123\n"
-      socket.gets.chomp
+      socket.gets&.chomp
     end
   
-    assert_equal output, '123'
+    assert_equal output, 'Connection accepted for the user##123'
+    assert_equal Stores::Clients.count, 1
   end
 end
