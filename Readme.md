@@ -1,12 +1,9 @@
 # Solution
 
-##The flow diagram:
-
-![The Diagram](doc/architectural-diagram.png)
-
 ## Interactive Mode
 
 To play with the solution, feel free to run the command:
+
 
 ```bash
 bin/console
@@ -26,14 +23,29 @@ Servers::EventSource.start!
 or you can directly start the server
 
 ```bash
+# in tabA for event source
+bin/server
+```
+
+```bash
+# in tabB, for user clients to connect
 bin/server
 ```
 
 And then telnet
 
 ```bash
+# to emit events
 telnet localhost 9800
 ```
+
+```bash
+# to emit user clients by id
+telnet localhost 9801
+```
+##The flow diagram:
+
+![The Diagram](doc/architectural-diagram.png)
 
 # Exercise
 # TCP Server
