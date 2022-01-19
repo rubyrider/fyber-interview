@@ -3,7 +3,7 @@ require 'socket'
 
 module Servers
   class EventSource
-    attr_reader :port, :user_port
+    attr_reader :port
     
     def self.start!
       new.start!
@@ -11,32 +11,10 @@ module Servers
     
     def initialize
       @port = 9800
-      @user_port = 9801
     end
     
     def start!
       start_event_source_server!
-      start_user_server!
-    end
-
-    def start_user_server!
-      Thread.new do
-      TCPServer.open('localhost', user_port) do |server|
-        loop do
-          Thread.start(server.accept) do |client|
-            while (message = client.gets&.chomp)
-              case message
-              when 'Ping!'
-                client.puts "PongForUser"
-              when 'quit'
-                client.puts 'Quitting!'
-                client.close
-              end
-            end
-          end
-        end
-      end
-      end
     end
     
     def start_event_source_server!
