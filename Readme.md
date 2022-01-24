@@ -1,39 +1,54 @@
 # Solution
 
-##The flow diagram:
-
-![The Diagram](doc/architectural-diagram.png)
-
 ## Interactive Mode
 
 To play with the solution, feel free to run the command:
+
 
 ```bash
 bin/console
 ```
 
 ```ruby
-# To instantiate a  server
-# Run in the console:
+server = TcpServer.new
 
-Servers::EventSource.start!
+server.connect_user 12
+server.connect_user 36
+server.connect_user 50
 
-# and telnet with localhost and 9800
+server.emit_events('100|F|12|36')
 
-# TBH
+# To verify:
+puts Stores::Clients.follows
+puts Stores::Clients.list # optional
 ```
 
 or you can directly start the server
 
 ```bash
+# in tabA for event source
+bin/server
+```
+
+```bash
+# in tabB, for user clients to connect
 bin/server
 ```
 
 And then telnet
 
 ```bash
+# to emit events
 telnet localhost 9800
 ```
+
+```bash
+# to emit user clients by id
+telnet localhost 9801
+```
+##The flow diagram:
+
+![The Diagram](doc/architectural-diagram.png)
 
 # Exercise
 # TCP Server

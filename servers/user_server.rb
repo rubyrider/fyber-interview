@@ -5,6 +5,7 @@ module Servers
     def initialize
       @port   = 9801
       @stores = Stores::Clients.stores
+      Thread.report_on_exception = false
     end
     
     def self.start!
