@@ -10,14 +10,17 @@ bin/console
 ```
 
 ```ruby
-# To instantiate a  server
-# Run in the console:
+server = TcpServer.new
 
-Servers::EventSource.start!
+server.connect_user 12
+server.connect_user 36
+server.connect_user 50
 
-# and telnet with localhost and 9800
+server.emit_events('100|F|12|36')
 
-# TBH
+# To verify:
+puts Stores::Clients.follows
+puts Stores::Clients.list # optional
 ```
 
 or you can directly start the server

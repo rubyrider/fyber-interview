@@ -8,3 +8,4 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gem 'test-unit', require: false
 gem 'benchmark-ips', require: false
 gem 'byebug', require: false
+gem 'tp'

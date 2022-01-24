@@ -26,13 +26,14 @@ module Servers
         client.puts 'Quitting!'
         client.close
       else
-        client.puts message
+        Events::Message.new(message).process
       end
     end
     
     def start_event_source_server!
       Thread.new do
-        TCPServer.open('localhost', port) do |server|
+        begin
+          TCPServer.open('localhost', port) do |server|
           loop do
             Thread.start(server.accept) do |client|
               while (message = client.gets&.chomp)
@@ -40,6 +41,9 @@ module Servers
               end
             end
           end
+        end
+        rescue Errno::EADDRINUSE
+          retry
         end
       end
     end

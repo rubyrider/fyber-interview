@@ -18,7 +18,16 @@ module Stores
     
     class << self
       def stores
-        @@stores ||= Thread.current[:clients] ||= {}
+        @stores ||= (Thread.current[:clients] ||= {})
+      end
+      
+      def follows
+        @follows ||= (Thread.current[:follows] ||= {})
+      end
+      
+      def reset!
+        @stores = (Thread.current[:clients] = {})
+        @stores = (Thread.current[:follows] = {})
       end
       
       def count
@@ -27,6 +36,10 @@ module Stores
   
       def list
         stores
+      end
+
+      def all
+        stores.map {|user_id, client|  new(user_id, client) }
       end
   
       def get(user_id)
