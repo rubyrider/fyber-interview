@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'socket'
+require_relative "./../events/message"
 
 module Servers
   class EventSource
@@ -26,7 +27,7 @@ module Servers
         client.puts 'Quitting!'
         client.close
       else
-        Events::Message.new(message).process
+        ::Events::Message.new(message).process
       end
     end
     
@@ -41,9 +42,11 @@ module Servers
               end
             end
           end
-        end
+          end
         rescue Errno::EADDRINUSE
           retry
+        rescue => e
+          puts e.backtrace
         end
       end
     end
